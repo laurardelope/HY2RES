@@ -1,0 +1,250 @@
+{
+
+    "csv_path_in":"data/Signals_in.csv", 
+    "csv_path_out":"data/Signals_out.csv",
+    "n_iter":10,
+
+    
+    "max_pw_bat_car":3000, 
+    "max_pw_bat_des":3200, 
+
+    
+    "thr_soc_start_h2":86, 
+    "thr_soc_stop_h2":60, 
+    "thr_pcon_stop_h2":500, 
+    "thr_start_comp": 33.8, 
+    "thr_stop_comp":   29.2, 
+    "max_pres_tanque": 300, 
+    "max_pres_buffer": 35, 
+    "thr_soc_start_pila":20, 
+    "thr_soc_stop_pila":35, 
+    "thr_pdes_start_pila":2500, 
+    "thr_pdes_stop_pila": 2500,   
+    "thr_time_stop_pila": 5, 
+    "thr_elec_on": 100, 
+    "thr_comp_on": 0, 
+    "thr_pila_on": 0, 
+
+    
+    "max_cap": 8800,    
+    "t_sample": 5,          
+    "t_sample_ratio":0.9,  
+    "d_rate":60,            
+    "SOC_max":100,
+    "SOC_min":10,
+
+    "H2_flow_mean_elec": 340,   
+    "Pmean_elec": 1700,        
+
+    
+    "d_rate_h2":60,   
+    "buffer_cap": 35, 
+    "tank_cap":300,   
+    "vol_tanque":600, 
+    "vol_buffer":100, 
+    "Rconst":83.14466e-3,   
+    "temp":293.15,          
+    "Pmean_comp": 283.5, 
+
+    
+    "H2_flow_mean_pila": 20.87, 
+    "Pmean_pila": 1882.2,
+
+
+   
+    "inverter":{
+        "model":"RNN",      
+        "inputs":"real",   
+        "DNN": {
+            "modelPath": "RNNmodels/inverter_dense_model",
+            "mean":[963.912396, 643.544198, 0.000000, 65.904312, 249.189089, 302.173113, 0.599341, 373.951563120], 
+            "std": [1586.380325, 777.152454, 1.000000, 24.976920, 653.171991, 491.765892, 8.156946, 1020.485419],  
+            "depth": 1
+        },
+        "CNN": {
+            "modelPath": "RNNmodels/inverter_conv_model",
+            "mean":[1202.067403, 614.908681, 4.218086, 75.134694, 200.419670, 227.371934, 11.590202, 626.866900], 
+            "std": [1750.484457, 742.699440, 96.309822, 22.324125, 546.134418, 387.742806, 87.019553, 1350.077102], 
+            "depth": 3
+        },
+        "RNN": {
+            "modelPath": "RNNmodels/inveter_lstm_model",
+            "mean":[1202.067403, 614.908681, 4.218086, 75.134694, 200.419670, 227.371934, 11.590202, 626.866900], 
+            "std": [1750.484457, 742.699440, 96.309822, 22.324125, 546.134418, 387.742806, 87.019553, 1350.077102], 
+            "depth": 6
+        }
+    },
+
+    "PLC":{
+        "model":"algorithmic", 
+        "inputs":"real"
+    },
+    
+    "battery":{
+        "model":"RNN", 
+        "inputs":"real",
+        "DNN": {
+            "modelPath": "RNNmodels/Battery_dense_modelD5.h5",  
+            "mean":[14696.640339, 16877.701494, 67.493526], 
+            "std": [38485.260754, 26474.723743, 25.098252],  
+            "depth": 1
+        },
+        "CNN": {
+            "modelPath": "RNNmodels/Battery_conv_modelW300.h5", 
+            "mean":[14696.640339, 16877.701494, 67.493526], 
+            "std": [38485.260754, 26474.723743, 25.098252],  
+            "depth": 300
+        },
+        "RNN": {
+            "modelPath": "RNNmodels/Battery_lstm_modelW60D5.h5",  
+            "mean":[14696.640339, 16877.701494, 67.493526], 
+            "std": [38485.260754, 26474.723743, 25.098252],  
+            "depth": 60
+        }
+    },
+    
+    "electrolyzer":{
+        "model":"CNN", 
+        "inputs":"real", 
+        "DNN": {
+            "modelPath": "RNNmodels/Electrolyzer_P_dense_model.h5",
+            "mean":[0.117507, 216.863678, 218.395327, 29856.216173], 
+            "std": [0.322024, 523.719991, 800.163951, 31551.281339], 
+            "depth": 1
+        },
+        "CNN": {
+            "modelPath": "RNNmodels/Electrolyzer_P_conv_modelW30.h5",
+            "mean":[0.186315, 296.104420, 315.926523, 11831.956198], 
+            "std": [0.389362, 607.165114, 887.641912, 12564.122078], 
+            "depth": 30
+        },
+        "RNN": {
+            "modelPath": "RNNmodels/Electrolyzer_P_lstm_modelD60_.h5",
+            "mean":[0.186315, 296.104420, 315.926523, 11831.956198], 
+            "std": [0.389362, 607.165114, 887.641912, 12564.122078], 
+            "depth": 60
+        },
+
+        "modelH2":"CNNH2", 
+        "DNNH2": {
+            "modelPath": "RNNmodels/Electrolyzer_H2flow_dense_model_sr.h5",
+            "mean":[295.098863, 50.203922], 
+            "std": [607.197057, 117.120430], 
+            "depth": 1
+        },
+        "CNNH2": {
+            "modelPath": "RNNmodels/Electrolyzer_H2flow_conv_modelW300_sr.h5",
+            "mean":[295.824517, 50.255215], 
+            "std": [606.880821, 117.046518], 
+            "depth": 300
+        },
+        "RNNH2": {
+            "modelPath": "RNNmodels/Electrolyzer_H2flow_lstm_modelD60_sr.h5",
+            "mean":[295.824517, 50.255215], 
+            "std": [606.880821, 117.046518], 
+            "depth": 60
+        }
+    },
+    "h2Storage":{
+        "model":"RNN", 
+        "inputs":"real", 
+        "DNN": {
+            "modelPath": "RNNmodels/H2Storage_presbuffT_dense_model_d5.h5",
+            "mean":[30.203402, 90.583132, 33.540690, 3.683746, 0.049559, 13886.226154, 13.852289, 0.107308, 0.018690], 
+            "std": [ 1.577141, 2.464362,  98.652302,  13.434679, 0.397510, 12926.793684,5.078105, 0.309537, 0.135441], 
+            "depth": 1
+        },
+        "CNN": {
+            "modelPath": "RNNmodels/H2Storage_presbuffT_conv_modelW300_t_d5.h5",
+            "mean":[30.203402, 90.583132, 33.540690,3.683746,0.049559,13886.226154,13.852289,0.107308,0.018690], 
+            "std": [ 1.577141, 2.464362,  98.652302,  13.434679, 0.397510, 12926.793684,5.078105,0.309537,0.135441], 
+            "depth": 300
+        },
+        "RNN": {
+            "modelPath": "RNNmodels/H2Storage_presbuff_lstm_modelD60_d5.h5",
+           "mean":[30.203402, 90.583132, 33.540690,3.683746,0.049559,13886.226154,13.852289,0.107308,0.018690], 
+           "std": [ 1.577141, 2.464362,  98.652302,  13.434679, 0.397510, 12926.793684,5.078105,0.309537,0.135441],
+            "depth": 60
+        },
+        "modelPcomp":"RNNPcomp", 
+        "DNNPcomp": {
+            "modelPath": "RNNmodels/H2Storage_Pcomp_dense_model.h5",
+            "mean":[ 0.014597,35.884679,1.439173,15861.657403,7.101673], 
+            "std": [0.119933, 100.124420, 13.685723, 13105.988193,60.149568], 
+            "depth": 1
+        },
+        "CNNPcomp": {
+            "modelPath": "RNNmodels/H2Storage_Pcomp_conv_modelW300.h5",
+            "mean":[ 0.014597,35.884679,1.439173,15861.657403,7.101673], 
+            "std": [0.119933, 100.124420, 13.685723, 13105.988193,60.149568], 
+            "depth": 300
+        },
+        "RNNPcomp": {
+            "modelPath": "RNNmodels/H2Storage_Pcomp_lstm_modelD60.h5",
+            "mean":[ 0.014597,35.884679,1.439173,15861.657403,7.101673], 
+            "std": [0.119933, 100.124420, 13.685723, 13105.988193,60.149568], 
+            "depth": 60
+        },
+        "modelptank":"RNNptank", 
+        "DNNptank": {
+            "modelPath": "RNNmodels/H2Storage_prescompT_dense_model_d5.h5",
+            "mean":[ 13.852447,33.516790,0.049569,514.924386,98.086999,431.266751],
+            "std": [5.078626, 98.648875, 0.397551, 518.477608,6.970646, 3362.172936], 
+            "depth": 1
+        },
+        "CNNptank": {
+            "modelPath": "RNNmodels/H2Storage_prescompT_conv_modelW300_d5.h5",
+            "mean":[ 13.852447,33.516790,0.049569,514.924386,98.086999,431.266751], 
+            "std": [5.078626, 98.648875, 0.397551, 518.477608,6.970646, 3362.172936], 
+            "depth": 300
+        },
+        "RNNptank": {
+            "modelPath": "RNNmodels/H2Storage_prescompT_lstm_modelD60_d5.h5",
+            "mean":[ 13.852447,33.516790,0.049569,514.924386,98.086999,431.266751], 
+            "std": [5.078626, 98.648875, 0.397551, 518.477608,6.970646, 3362.172936], 
+            "depth": 60
+        }
+    },
+    "fuelCell":{
+        "model":"algorithmic", 
+        "inputs":"real", 
+        "DNN": {
+            "modelPath": "RNNmodels/FuelCell_Ppila_dense_model_mmovAlltonz.keras",
+            "mean":[0.316029, 103.492468,1.145665,37.715986], 
+            "std": [0.464934, 421.158078,4.681527,180.819651], 
+            "depth": 1
+        },
+        "CNN": {
+            "modelPath": "RNNmodels/FuelCell_Ppila_conv_modelW300_mmovAlltonz.keras",
+            "mean":[0.316029, 103.492468,1.145665,37.715986], 
+            "std": [0.464934, 421.158078,4.681527,180.819651], 
+            "depth": 300
+        },
+        "RNN": {
+            "modelPath": "RNNmodels/FuelCell_Ppila_lstm_modelD60_mmovAlltonz.keras",
+            "mean":[0.316029, 103.492468,1.145665,37.715986], 
+            "std": [0.464934, 421.158078,4.681527,180.819651], 
+            "depth": 60
+        },
+
+        "modelh2fc":"DNNh2fc", 
+        "DNNh2fc": {
+            "modelPath": "RNNmodels/FuelCell_h2flowpila_dense_model.h5",
+            "mean":[0.293417, 528.224870,5.833816], 
+            "std": [0.455338, 845.964520,9.517207], 
+            "depth": 1
+        },
+        "CNNh2fc": {
+            "modelPath": "RNNmodels/FuelCell_h2flowpila_conv_modelW300.h5",
+            "mean":[0.293417, 528.224870,5.833816], 
+            "std": [0.455338, 845.964520,9.517207], 
+            "depth": 300
+        },
+        "RNNh2fc": {
+            "modelPath": "RNNmodels/FuelCell_h2flowpila_lstm_modelD60.h5",
+            "mean":[0.293417, 528.224870,5.833816], 
+            "std": [0.455338, 845.964520,9.517207],
+            "depth": 60
+        }
+    }
+}
