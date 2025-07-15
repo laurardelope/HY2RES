@@ -36,7 +36,7 @@ The digital twin can be configured through the config.json file located in the d
 * "thr_pila_on": Fuel Cell generated power threshold [W] to consider it is ON when using real inputs, currently 0 W. , 
 
 ### Battery configuration parameters:    
-* "max_cap": Maximum battery capacity [KW/h], currently 8800 KW/h.  
+* "max_cap": Maximum battery capacity [Wh], currently 8800 Wh.  
 * "t_sample": Time between samples [seconds], currently 5 seconds.          
 * "t_sample_ratio":0.9,  
 * "d_rate":  Decimation rate, currently 60, meaning that 1 of 60 samples is remaining.           
